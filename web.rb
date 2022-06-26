@@ -25,17 +25,17 @@ post '/' do
     case $running_count
     when 0
       $running_count = 3
-      body ["L", "R"].sample
+      body "F"
     when 1
       $running_count = 0
       $mode = "attacking"
-      body "F"
+      body ["L", "R"].sample
     when 2
       $running_count -= 1
-      body ["L", "R"].sample
+      body "F"
     when 3
       $running_count -= 1
-      body "F"
+      body ["L", "R"].sample
     end
   when "attacking"
     if !target.empty?
@@ -115,12 +115,12 @@ end
 def facing_wall
   case facing
   when "N"
-    current_y == 0
+    [0, 1].include?(current_y)
   when "S"
-    current_y == arena_info("y")
+    [arena_info("y"), arena_info("y") - 1].include?(current_y)
   when "W"
-    current_x == 0
+    [0, 1].include?(current_x)
   when "E"
-    current_x == arena_info("x")
+    [arena_info("x"), arena_info("x") - 1].include?(current_x)
   end
 end
