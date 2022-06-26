@@ -14,6 +14,7 @@ end
 $running_count = 0
 
 post '/' do
+  status 200
   @data = JSON.parse(request.body.read)
   hit_analysis
 
@@ -22,23 +23,23 @@ post '/' do
     case $running_count
     when 0
       $running_count = 3
-      return ["L", "R"].sample
+      return body(["L", "R"].sample)
     when 1
       $running_count = 0
       $mode = "attacking"
-      return "F"
+      return body("F")
     when 2
       $running_count -= 1
-      return ["L", "R"].sample
+      return body(["L", "R"].sample)
     when 3
       $running_count -= 1
-      return "F"
+      return body("F")
     end
   when "attacking"
     if target.empty?
-      return ["L", "R", "F"].sample
+      return body(["L", "R", "F"].sample)
     else
-      return "T"
+      return body("T")
     end
   end
 end
