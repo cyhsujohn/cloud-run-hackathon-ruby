@@ -86,9 +86,7 @@ end
 
 def search_x(facing)
   @_search_x ||= case facing
-  when "N" then [current_x]
   when "W" then [current_x - 2, current_x - 1]
-  when "S" then [current_x]
   when "E" then [current_x + 1, current_x + 2]
   end
 end
@@ -96,9 +94,7 @@ end
 def search_y(facing)
   @_search_y ||= case facing
   when "N" then [current_y - 2, current_y - 1]
-  when "W" then [current_y]
   when "S" then [current_y + 1, current_y + 2]
-  when "E" then [current_y]
   end
 end
 
@@ -106,9 +102,9 @@ def target
   state.select do |k, v|
     case facing
     when "N", "S"
-     v["x"] == current_x && search_y.include?(v["y"])
+     v["x"] == current_x && search_y(facing).include?(v["y"])
     when "W", "E"
-     v["y"] == current_y && search_x.include?(v["x"])
+     v["y"] == current_y && search_x(facing).include?(v["x"])
     end
   end
 end
