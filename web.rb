@@ -12,6 +12,7 @@ get '/' do
 end
 
 $running_count = 0
+$mode = "attacking"
 
 post '/' do
   status 200
@@ -23,23 +24,23 @@ post '/' do
     case $running_count
     when 0
       $running_count = 3
-      return body(["L", "R"].sample)
+      body ["L", "R"].sample
     when 1
       $running_count = 0
       $mode = "attacking"
-      return body("F")
+      body "F"
     when 2
       $running_count -= 1
-      return body(["L", "R"].sample)
+      body ["L", "R"].sample
     when 3
       $running_count -= 1
-      return body("F")
+      body "F"
     end
   when "attacking"
     if target.empty?
-      return body(["L", "R", "F"].sample)
+      body ["L", "R", "F"].sample
     else
-      return body("T")
+      body "T"
     end
   end
 end
@@ -86,17 +87,17 @@ end
 def search_x(facing)
   @_search_x ||= case facing
   when "N" then [current_x]
-  when "W" then [(current_x - 2)..current_x]
+  when "W" then [current_x - 2, current_x - 1]
   when "S" then [current_x]
-  when "E" then [current_x..(current_x + 2)]
+  when "E" then [current_x + 1, current_x + 2]
   end
 end
 
 def search_y(facing)
   @_search_y ||= case facing
-  when "N" then [(current_y - 2)..current_y]
+  when "N" then [current_y - 2, current_y - 1]
   when "W" then [current_y]
-  when "S" then [current_y..(current_y + 2)]
+  when "S" then [current_y + 1, current_y + 2]
   when "E" then [current_y]
   end
 end
