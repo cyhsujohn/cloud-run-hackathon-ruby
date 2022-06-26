@@ -13,6 +13,7 @@ end
 
 $running_count = 0
 $mode = "attacking"
+$hit_count = 0
 
 post '/' do
   status 200
@@ -72,7 +73,7 @@ end
 
 def hit_analysis
   if self_info["wasHit"]
-    $hit_count ||= ($hit_count + 1)
+    $hit_count += 1
   else
     $hit_count = 0
   end
@@ -86,15 +87,15 @@ end
 
 def search_x(facing)
   @_search_x ||= case facing
-  when "W" then [current_x - 2, current_x - 1]
-  when "E" then [current_x + 1, current_x + 2]
+  when "W" then [(current_x - 3)..(current_x - 1)]
+  when "E" then [(current_x + 1)..(current_x + 3)]
   end
 end
 
 def search_y(facing)
   @_search_y ||= case facing
-  when "N" then [current_y - 2, current_y - 1]
-  when "S" then [current_y + 1, current_y + 2]
+  when "N" then [(current_y - 3)..(current_y - 1)]
+  when "S" then [(current_y + 1)..(current_y + 3)]
   end
 end
 
