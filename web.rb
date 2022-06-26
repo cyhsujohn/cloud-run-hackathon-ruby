@@ -54,7 +54,7 @@ def arena_info(direction = "x", full_info = true)
 end
 
 def state
-  @_state ||- @data["arena"]["state"]
+  @_state ||= @data["arena"]["state"]
 end
 
 def self_info
