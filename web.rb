@@ -38,15 +38,17 @@ post '/' do
       body "F"
     end
   when "attacking"
-    if target.empty?
-      body ["L", "R", "F"].sample
-    else
+    if !target.empty?
       body "T"
+    elsif facing_wall
+      body ["L", "R"].sample
+    else
+      body ["L", "R", "F"].sample
     end
   end
 end
 
-def arena_info(direction = "x", full_info = true)
+def arena_info(direction = "x", full_info = false)
   return @data["arena"]["dims"] if full_info
   if direction == "x"
     @data["arena"]["dims"][0]
@@ -107,5 +109,18 @@ def target
     when "W", "E"
      v["y"] == current_y && search_x(facing).include?(v["x"])
     end
+  end
+end
+
+def facing_wall
+  case facing
+  when "N"
+    current_y == 0
+  when "S"
+    current_y == arena_info("y")
+  when "W"
+    current_x == 0
+  when "E"
+    current_x == arena_info("x")
   end
 end
