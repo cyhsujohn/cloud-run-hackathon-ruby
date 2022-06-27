@@ -24,18 +24,15 @@ post '/' do
   when "running"
     case $running_count
     when 0
-      $running_count = 3
+      $running_count = 2
       body "F"
     when 1
       $running_count = 0
       $mode = "attacking"
       body ["L", "R"].sample
     when 2
-      $running_count -= 1
+      $running_count = 1
       body "F"
-    when 3
-      $running_count -= 1
-      body ["L", "R"].sample
     end
   when "attacking"
     if !target.empty?
@@ -80,7 +77,7 @@ def hit_analysis
     $hit_count = 0
   end
 
-  $mode = "running" if $hit_count >= 3
+  $mode = "running" if $hit_count >= 2
 end
 
 def facing
